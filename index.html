@@ -1,0 +1,2885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a0a14">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>HQL Connects - Premium Connection Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-x: hidden;
+        }
+
+        body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
+
+        :root {
+            --primary-color: #8b5cf6;
+            --secondary-color: #a78bfa;
+            --accent-color: #06b6d4;
+            --neon-purple: #c084fc;
+            --neon-cyan: #22d3ee;
+            --glass-bg: rgba(139, 92, 246, 0.1);
+            --glass-border: rgba(139, 92, 246, 0.2);
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-primary: #f9fafb;
+            --bg-secondary: #ffffff;
+            --gradient-primary: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            --gradient-secondary: linear-gradient(135deg, #c084fc, #22d3ee);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #f3e8ff 0%, #e0e7ff 50%, #cffafe 100%);
+            min-height: 100vh;
+        }
+
+        /* Glass Morphism Effects */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.15);
+            border-color: var(--neon-purple);
+        }
+
+        /* Neon Effects */
+        .neon-border {
+            border: 2px solid var(--neon-purple);
+            box-shadow: 0 0 20px rgba(196, 132, 252, 0.3);
+        }
+
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .header.menu-open {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .logo {
+                font-size: 1.6rem;
+                z-index: 1002;
+            }
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu li a:hover {
+            color: var(--primary-color);
+            text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+        }
+
+        .nav-menu li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu li a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .mobile-menu span {
+            width: 25px;
+            height: 3px;
+            background: var(--text-primary);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            padding: 5rem 0;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(196, 132, 252, 0.08) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 3rem;
+            width: 100%;
+        }
+
+        .hero-text {
+            max-width: 800px;
+        }
+
+        .hero-text .subtitle {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out 0.2s forwards;
+        }
+
+        .hero-text h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out 0.4s forwards;
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out 0.6s forwards;
+        }
+
+        .cta-buttons {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out 0.8s forwards;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .floating-card {
+            width: 280px;
+            height: 180px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: float 6s ease-in-out infinite;
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.1);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(50px) scale(0.9);
+            transition: all 0.8s ease-out;
+        }
+
+        .floating-card.animate {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .floating-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .floating-card:nth-child(2) {
+            animation-delay: 2s;
+        }
+
+        .floating-card:nth-child(3) {
+            animation-delay: 4s;
+        }
+
+        .floating-card i {
+            font-size: 2.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .floating-card h3 {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Button Styles */
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            border: 2px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(139, 92, 246, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(139, 92, 246, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .service-card {
+            display: flex;
+            gap: 2rem;
+            padding: 2.5rem;
+            align-items: center;
+            transition: all 0.3s ease;
+            border-radius: 20px;
+        }
+
+        .service-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1;
+        }
+
+        .service-image i {
+            font-size: 3rem;
+            color: white;
+            z-index: 2;
+            position: relative;
+        }
+
+        .service-content h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .service-content p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-card:hover .service-image {
+            transform: scale(1.05);
+        }
+
+        /* Disclaimer Section */
+        .disclaimer {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 4rem 0;
+        }
+
+        .disclaimer h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .disclaimer-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .disclaimer-content p {
+            margin-bottom: 1rem;
+        }
+
+        .disclaimer-content ul {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        .disclaimer-content ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            aspect-ratio: 16/10;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                rgba(139, 92, 246, 0.3) 0%, 
+                rgba(6, 182, 212, 0.3) 50%, 
+                rgba(196, 132, 252, 0.3) 100%);
+            z-index: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-image::before {
+            opacity: 0.7;
+        }
+
+        .gallery-item:hover .gallery-image img {
+            transform: scale(1.1);
+        }
+
+        .gallery-image i {
+            font-size: 4rem;
+            color: white;
+            z-index: 2;
+            position: relative;
+            opacity: 0.9;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 2rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 3;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-overlay h3 {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-overlay p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Gallery Lightbox */
+        .gallery-lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .lightbox-image {
+            width: 100%;
+            height: 400px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lightbox-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+
+        .lightbox-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(139, 92, 246, 0.3) 0%, 
+                rgba(6, 182, 212, 0.3) 100%);
+            z-index: 1;
+            border-radius: 16px;
+        }
+
+        .lightbox-image i {
+            font-size: 6rem;
+            color: white;
+            z-index: 2;
+            position: relative;
+        }
+
+        .lightbox-info h3 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .lightbox-info p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            color: var(--primary-color);
+        }
+
+        /* Why Choose Us Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Plans Section */
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .plan-card {
+            padding: 2.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plan-card.featured {
+            border: 2px solid var(--neon-purple);
+            box-shadow: 0 0 30px rgba(196, 132, 252, 0.2);
+        }
+
+        .plan-card.featured::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: 1rem;
+            right: -2rem;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.5rem 3rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transform: rotate(45deg);
+        }
+
+        .plan-price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-period {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .plan-features li {
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .plan-features li i {
+            color: var(--primary-color);
+        }
+
+        /* Testimonials Section */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-card {
+            padding: 2rem;
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 1rem;
+            left: 2rem;
+            font-size: 4rem;
+            color: var(--primary-color);
+            opacity: 0.3;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            padding-left: 1rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .author-info h4 {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .author-info p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* FAQ Section */
+        .faq-container {
+            max-width: 800px;
+            margin: 3rem auto 0;
+        }
+
+        .faq-item {
+            margin-bottom: 1rem;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .faq-question h3 {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .faq-question i {
+            color: var(--primary-color);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.active i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-top: none;
+        }
+
+        .faq-answer.active {
+            max-height: 200px;
+        }
+
+        .faq-answer p {
+            padding: 1.5rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Contact Section */
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+
+        .contact-info h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item i {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-form {
+            padding: 2rem;
+            border-radius: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border);
+            padding: 3rem 0 1rem;
+            margin-top: 5rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--glass-border);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+        }
+
+        .social-links a:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes menuItemFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animation Classes */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .animate-on-scroll.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .animate-on-scroll {
+                opacity: 1;
+                transform: none;
+            }
+            
+            .floating-card {
+                animation: none;
+            }
+        }
+
+        /* Performance Optimizations for Mobile */
+        @media (max-width: 768px) {
+            * {
+                will-change: auto !important;
+            }
+            
+            .animate-on-scroll {
+                transition: all 0.5s ease-out;
+            }
+            
+            .floating-card {
+                animation-duration: 4s;
+            }
+        }
+
+        .section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .section.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .service-card, .plan-card, .feature-card, .testimonial-card, .gallery-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .service-card.animate, .plan-card.animate, .feature-card.animate, .testimonial-card.animate, .gallery-item.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .faq-item {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .faq-item.animate {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Enhanced Responsive Design */
+        
+        /* Desktop and larger screens */
+        @media (min-width: 769px) {
+            .mobile-menu {
+                display: none !important;
+            }
+            
+            .nav-menu {
+                display: flex !important;
+                position: static !important;
+                background: transparent !important;
+                backdrop-filter: none !important;
+                border: none !important;
+                padding: 0 !important;
+                flex-direction: row !important;
+                max-height: none !important;
+                transform: none !important;
+                box-shadow: none !important;
+            }
+            
+            .nav-menu li {
+                margin: 0 !important;
+                opacity: 1 !important;
+                transform: none !important;
+                animation: none !important;
+            }
+            
+            .nav-menu li a {
+                font-size: 1rem !important;
+                padding: 0.5rem 1rem !important;
+                color: var(--text-primary) !important;
+                font-weight: 500 !important;
+            }
+            
+            .nav-menu li a::before {
+                display: none !important;
+            }
+        }
+        
+        /* Touch and Mobile Optimization */
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+        
+        /* Improve scroll performance on mobile */
+        body {
+            -webkit-overflow-scrolling: touch;
+            overflow-x: hidden;
+        }
+        
+        /* Better touch targets */
+        a, button, .btn, .mobile-menu {
+            min-height: 44px;
+            min-width: 44px;
+        }
+        
+        /* Tablet Landscape (1024px and below) */
+        @media (max-width: 1024px) {
+            .container {
+                max-width: 95%;
+                padding: 0 2rem;
+            }
+            
+            .hero-visual {
+                margin-top: 2rem;
+            }
+            
+            .floating-card {
+                width: 280px;
+                height: 160px;
+            }
+            
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+            
+            .plans-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+            
+            .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        /* Tablet Portrait (768px and below) */
+        @media (max-width: 768px) {
+            /* Navigation */
+            .nav-menu {
+                display: none;
+                position: fixed;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(30px);
+                -webkit-backdrop-filter: blur(30px);
+                border-top: 1px solid var(--glass-border);
+                flex-direction: column;
+                padding: 2rem 0;
+                z-index: 999;
+                transform: translateY(0);
+                transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                box-shadow: 0 -10px 30px rgba(139, 92, 246, 0.2);
+                max-height: 0;
+                overflow: hidden;
+            }
+            
+            .nav-menu.active {
+                display: flex;
+                max-height: 500px;
+                transform: translateY(0);
+            }
+            
+            .nav-menu li {
+                margin: 0.5rem 0;
+                text-align: center;
+                opacity: 0;
+                transform: translateY(20px);
+                animation: menuItemFadeIn 0.3s ease forwards;
+            }
+            
+            .nav-menu.active li {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            
+            .nav-menu.active li:nth-child(1) { animation-delay: 0.1s; }
+            .nav-menu.active li:nth-child(2) { animation-delay: 0.15s; }
+            .nav-menu.active li:nth-child(3) { animation-delay: 0.2s; }
+            .nav-menu.active li:nth-child(4) { animation-delay: 0.25s; }
+            .nav-menu.active li:nth-child(5) { animation-delay: 0.3s; }
+            .nav-menu.active li:nth-child(6) { animation-delay: 0.35s; }
+            .nav-menu.active li:nth-child(7) { animation-delay: 0.4s; }
+            .nav-menu.active li:nth-child(8) { animation-delay: 0.45s; }
+            
+            .nav-menu li a {
+                font-size: 1.2rem;
+                padding: 1rem 2rem;
+                display: block;
+                border-radius: 12px;
+                transition: all 0.3s ease;
+                color: var(--text-primary);
+                font-weight: 600;
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .nav-menu li a::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: var(--gradient-primary);
+                transition: left 0.3s ease;
+                z-index: -1;
+            }
+            
+            .nav-menu li a:hover::before {
+                left: 0;
+            }
+            
+            .nav-menu li a:hover {
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+            }
+
+            .mobile-menu {
+                display: flex;
+                flex-direction: column;
+                cursor: pointer;
+                padding: 0.7rem;
+                z-index: 1001;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+            }
+            
+            .mobile-menu:hover {
+                background: rgba(139, 92, 246, 0.1);
+            }
+            
+            .mobile-menu span {
+                width: 28px;
+                height: 3px;
+                background: var(--primary-color);
+                margin: 3px 0;
+                transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                border-radius: 3px;
+                transform-origin: center;
+            }
+            
+            .mobile-menu.active span:nth-child(1) {
+                transform: rotate(45deg) translate(6px, 6px);
+                background: var(--neon-purple);
+            }
+            
+            .mobile-menu.active span:nth-child(2) {
+                opacity: 0;
+                transform: scale(0);
+            }
+            
+            .mobile-menu.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(6px, -6px);
+                background: var(--neon-purple);
+            }
+
+            /* Hero Section */
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 3rem;
+            }
+            
+            .hero-text h1 {
+                font-size: 3.5rem;
+                line-height: 1.1;
+            }
+
+            .hero-text p {
+                font-size: 1.1rem;
+                margin: 1.5rem 0;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .stat-item {
+                min-width: 120px;
+            }
+
+            .stat-number {
+                font-size: 2.2rem;
+            }
+
+            .floating-card {
+                width: 260px;
+                height: 150px;
+                margin: 1rem;
+            }
+            
+            .hero-visual {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            /* Services */
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .service-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 2rem;
+            }
+            
+            .service-image {
+                margin-bottom: 1.5rem;
+            }
+
+            /* Gallery */
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .gallery-item {
+                aspect-ratio: 16/10;
+                height: auto;
+            }
+
+            .lightbox-content {
+                max-width: 95%;
+                padding: 1.5rem;
+                margin: 2rem;
+            }
+
+            .lightbox-image {
+                height: 200px;
+                margin-bottom: 1rem;
+            }
+
+            .lightbox-image i {
+                font-size: 4rem;
+            }
+
+            /* Plans */
+            .plans-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .plan-card {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            /* Features */
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            /* Testimonials */
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            /* FAQ */
+            .faq-item {
+                margin-bottom: 1rem;
+            }
+
+            /* Contact */
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .contact-form {
+                order: 2;
+            }
+            
+            .contact-info {
+                order: 1;
+                text-align: center;
+            }
+
+            /* Footer */
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+            
+            .footer-section {
+                border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+                padding-bottom: 2rem;
+                margin-bottom: 2rem;
+            }
+            
+            .footer-section:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+            }
+
+            /* General */
+            .container {
+                padding: 0 1.5rem;
+            }
+
+            .section {
+                padding: 4rem 0;
+            }
+
+            .cta-buttons {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .btn {
+                min-width: 200px;
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
+            }
+
+            .disclaimer {
+                padding: 2rem;
+                margin: 2rem 1rem;
+            }
+        }
+
+        /* Large Mobile (600px and below) */
+        @media (max-width: 600px) {
+            .hero-text h1 {
+                font-size: 3rem;
+            }
+            
+            .floating-card {
+                width: 240px;
+                height: 140px;
+            }
+            
+            .floating-card h3 {
+                font-size: 1rem;
+            }
+            
+            .hero-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            
+            .service-card h3 {
+                font-size: 1.3rem;
+            }
+            
+            .plan-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .testimonial blockquote {
+                font-size: 1rem;
+            }
+        }
+
+        /* Small Mobile (480px and below) */
+        @media (max-width: 480px) {
+            /* Hero */
+            .hero-text h1 {
+                font-size: 2.5rem;
+                line-height: 1.2;
+            }
+
+            .hero-text .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .hero-text p {
+                font-size: 1rem;
+            }
+
+            .floating-card {
+                width: 220px;
+                height: 130px;
+            }
+
+            .floating-card i {
+                font-size: 2rem;
+            }
+            
+            .floating-card h3 {
+                font-size: 0.9rem;
+            }
+
+            /* Stats */
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            /* Service Images */
+            .service-image {
+                width: 80px;
+                height: 80px;
+            }
+
+            .service-image i {
+                font-size: 2rem;
+            }
+
+            /* Cards */
+            .service-card,
+            .plan-card,
+            .feature-card,
+            .testimonial {
+                padding: 1.5rem;
+            }
+            
+            .plan-card h3 {
+                font-size: 1.5rem;
+            }
+            
+            .plan-price {
+                font-size: 2rem;
+            }
+
+            /* Buttons */
+            .btn {
+                min-width: 180px;
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            /* Forms */
+            .form-group input,
+            .form-group textarea {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+
+            /* General */
+            .container {
+                padding: 0 1rem;
+            }
+
+            .section {
+                padding: 3rem 0;
+            }
+            
+            .section h2 {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
+
+            .disclaimer {
+                padding: 1.5rem;
+                margin: 1rem 0.5rem;
+            }
+            
+            /* Lightbox */
+            .lightbox-content {
+                padding: 1rem;
+                margin: 1rem;
+            }
+            
+            .lightbox-image {
+                height: 150px;
+            }
+            
+            .lightbox-image i {
+                font-size: 3rem;
+            }
+        }
+
+        /* Extra Small Mobile (360px and below) */
+        @media (max-width: 360px) {
+            .hero-text h1 {
+                font-size: 2.2rem;
+            }
+            
+            .floating-card {
+                width: 200px;
+                height: 120px;
+            }
+            
+            .floating-card i {
+                font-size: 1.8rem;
+            }
+            
+            .btn {
+                min-width: 160px;
+                padding: 0.7rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            
+            .container {
+                padding: 0 0.8rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="#" class="logo">HQL Connects</a>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#plans">Plans</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section id="home" class="hero section">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <div class="subtitle">Premium Digital Solutions</div>
+                        <h1>Unleash Your Digital Potential</h1>
+                        <p>Transform your connectivity experience with our advanced network solutions. Fast, secure, and reliable connections designed for modern lifestyles.+1(833)708-7177</p>
+                        <div class="cta-buttons">
+                            <a href="tel:+18337087177" class="btn btn-primary">
+                                <i class="fas fa-rocket"></i>
+                               Call now For offers
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="floating-card">
+                            <i class="fas fa-network-wired"></i>
+                            <h3>Ultra-Fast Network</h3>
+                        </div>
+                        <div class="floating-card">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Secure Connection</h3>
+                        </div>
+                        <div class="floating-card">
+                            <i class="fas fa-globe"></i>
+                            <h3>Global Coverage</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Our Premium Services</h2>
+                    <p>Discover our comprehensive range of connection services designed to meet all your digital needs with cutting-edge technology and unmatched reliability.</p>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card glass-card">
+                        <div class="service-image">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>High-Speed Connectivity</h3>
+                            <p>Experience lightning-fast internet speeds with our premium fiber-optic network infrastructure. Get download speeds up to 1 Gbps and enjoy seamless streaming, gaming, and work-from-home experiences.</p>
+                        </div>
+                    </div>
+                    <div class="service-card glass-card">
+                        <div class="service-image">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Premium Streaming</h3>
+                            <p>Enjoy buffer-free streaming with our optimized network for 4K video, live sports, and entertainment content. Stream multiple devices simultaneously without interruption or quality loss.</p>
+                        </div>
+                    </div>
+                    <div class="service-card glass-card">
+                        <div class="service-image">
+                            <i class="fas fa-cubes"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Complete Bundle Packages</h3>
+                            <p>Get everything you need in one convenient package. Our bundles include high-speed internet, premium streaming services, and advanced security features at unbeatable prices.</p>
+                        </div>
+                    </div>
+                    <div class="service-card glass-card">
+                        <div class="service-image">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Mobile Solutions</h3>
+                            <p>Stay connected on the go with our mobile-first approach. Our dedicated mobile apps and optimized connections ensure you have reliable internet access wherever your business takes you.</p>
+                        </div>
+                    </div>
+                    <div class="service-card glass-card">
+                        <div class="service-image">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>24/7 Expert Support</h3>
+                            <p>Get round-the-clock assistance from our certified technical experts. Whether you need setup help, troubleshooting, or optimization advice, our support team is always ready to help.</p>
+                        </div>
+                    </div>
+                    <div class="service-card glass-card">
+                        <div class="service-image">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Analytics & Monitoring</h3>
+                            <p>Track your connection performance with real-time analytics and comprehensive monitoring tools. Get detailed insights into usage patterns, speed metrics, and network optimization opportunities.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Our Network in Action</h2>
+                    <p>Explore our state-of-the-art infrastructure and see how we deliver exceptional connectivity solutions across the globe.</p>
+                </div>
+                <div class="gallery-grid">
+                    <div class="gallery-item" onclick="openLightbox('fiber')">
+                        <div class="gallery-image">
+                            <img src="1.jpg" alt="Fiber Optic Network" />
+                        </div>
+                        <div class="gallery-overlay">
+                            <h3>Fiber Optic Network</h3>
+                            <p>Miles of high-speed fiber optic cables connecting communities and businesses nationwide.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" onclick="openLightbox('control')">
+                        <div class="gallery-image">
+                            <img src="2.png" alt="Network Control Center" />
+                        </div>
+                        <div class="gallery-overlay">
+                            <h3>Network Control Center</h3>
+                            <p>24/7 monitoring and management ensuring optimal performance and rapid issue resolution.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" onclick="openLightbox('installation')">
+                        <div class="gallery-image">
+                            <img src="3.jpg" alt="Professional Installation" />
+                        </div>
+                        <div class="gallery-overlay">
+                            <h3>Professional Installation</h3>
+                            <p>Expert technicians providing seamless installation and setup services for residential and business customers.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" onclick="openLightbox('equipment')">
+                        <div class="gallery-image">
+                            <img src="4.webp" alt="Advanced Equipment" />
+                        </div>
+                        <div class="gallery-overlay">
+                            <h3>Advanced Equipment</h3>
+                            <p>Latest generation routers, switches, and networking equipment delivering unmatched performance.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" onclick="openLightbox('support')">
+                        <div class="gallery-image">
+                            <img src="5.webp" alt="Customer Support Team" />
+                        </div>
+                        <div class="gallery-overlay">
+                            <h3>Customer Support Team</h3>
+                            <p>Dedicated support professionals ready to assist you with any technical questions or service needs.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" onclick="openLightbox('security')">
+                        <div class="gallery-image">
+                            <img src="6.jpg" alt="Network Security" />
+                        </div>
+                        <div class="gallery-overlay">
+                            <h3>Network Security</h3>
+                            <p>Advanced cybersecurity measures and protocols protecting your data and ensuring secure, reliable connections.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us Section -->
+        <section id="about" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Why Choose HQL Connects?</h2>
+                    <p>Experience the difference with our superior service quality and customer-focused approach that delivers exceptional value.</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card glass-card">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Lightning Fast Speeds</h3>
+                        <p>Experience ultra-fast internet with our fiber-optic network delivering consistent speeds up to 1 Gbps for all your digital needs.</p>
+                    </div>
+                    <div class="feature-card glass-card">
+                        <i class="fas fa-headset"></i>
+                        <h3>Expert Support Team</h3>
+                        <p>Get instant help from our certified technicians available 24/7 through chat, phone, or email whenever you need assistance.</p>
+                    </div>
+                    <div class="feature-card glass-card">
+                        <i class="fas fa-globe"></i>
+                        <h3>Nationwide Coverage</h3>
+                        <p>Stay connected anywhere with our extensive network coverage spanning across major cities and rural areas nationwide.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Plans Section -->
+        <section id="plans" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Choose Your Plan</h2>
+                    <p>Select the perfect plan that matches your needs with transparent pricing and no hidden fees.</p>
+                </div>
+                <div class="plans-grid">
+                    <div class="plan-card glass-card">
+                        <h3>Starter</h3>
+                        <div class="plan-price">$9<span style="font-size: 1rem;">/mo</span></div>
+                        <div class="plan-period">Perfect for personal use</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Up to 100 Mbps speed</li>
+                            <li><i class="fas fa-check"></i> 5 simultaneous connections</li>
+                            <li><i class="fas fa-check"></i> Basic support</li>
+                            <li><i class="fas fa-check"></i> Standard encryption</li>
+                            <li><i class="fas fa-check"></i> 30-day money back</li>
+                        </ul>
+                        <a href="tel:+18337087177" class="btn btn-secondary" style="width: 100%;">Get Started</a>
+                    </div>
+                    <div class="plan-card glass-card featured">
+                        <h3>Professional</h3>
+                        <div class="plan-price">$19<span style="font-size: 1rem;">/mo</span></div>
+                        <div class="plan-period">Best for small teams</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Up to 500 Mbps speed</li>
+                            <li><i class="fas fa-check"></i> 15 simultaneous connections</li>
+                            <li><i class="fas fa-check"></i> Priority support</li>
+                            <li><i class="fas fa-check"></i> Advanced encryption</li>
+                            <li><i class="fas fa-check"></i> 30-day money back</li>
+                            <li><i class="fas fa-check"></i> Analytics dashboard</li>
+                        </ul>
+                        <a href="tel:+18337087177" class="btn btn-primary neon-glow" style="width: 100%;">Get Started</a>
+                    </div>
+                    <div class="plan-card glass-card">
+                        <h3>Enterprise</h3>
+                        <div class="plan-price">$39<span style="font-size: 1rem;">/mo</span></div>
+                        <div class="plan-period">For large organizations</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Unlimited speed</li>
+                            <li><i class="fas fa-check"></i> Unlimited connections</li>
+                            <li><i class="fas fa-check"></i> Dedicated support</li>
+                            <li><i class="fas fa-check"></i> Enterprise encryption</li>
+                            <li><i class="fas fa-check"></i> 30-day money back</li>
+                            <li><i class="fas fa-check"></i> Custom integrations</li>
+                            <li><i class="fas fa-check"></i> SLA guarantee</li>
+                        </ul>
+                        <a href="tel:+18337087177" class="btn btn-secondary" style="width: 100%;">Contact Sales</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>What Our Customers Say</h2>
+                    <p>Join thousands of satisfied customers who trust HQL Connects for their connection needs.</p>
+                </div>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card glass-card">
+                        <p class="testimonial-text">HQL Connects has completely transformed our business operations. The speed and reliability are unmatched, and their support team is incredibly responsive.</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">SC</div>
+                            <div class="author-info">
+                                <h4>Sarah Chen</h4>
+                                <p>CEO, TechStartup Inc.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card glass-card">
+                        <p class="testimonial-text">I've tried many connection services, but none come close to HQL Connects. The setup was incredibly easy, and the performance has been flawless for months.</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">MJ</div>
+                            <div class="author-info">
+                                <h4>Michael Johnson</h4>
+                                <p>Freelance Developer</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card glass-card">
+                        <p class="testimonial-text">The security features and global coverage make HQL Connects perfect for our remote team. We can work confidently from anywhere in the world.</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">EP</div>
+                            <div class="author-info">
+                                <h4>Emily Parker</h4>
+                                <p>Remote Team Lead</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Frequently Asked Questions</h2>
+                    <p>Find answers to common questions about our services and get the information you need.</p>
+                </div>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>What services does HQL Connects offer?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>HQL Connects provides a range of connectivity solutions including high-speed internet, cellular plans, bundled packages, and streaming services. As a certified JNA dealer, we offer services from top providers, ensuring you have access to the best options for your home or business.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>What companies are serviceable through HQL Connects and JNA?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>As a certified JNA dealer, HQL Connects offers services from leading companies, including: Paramount+, SHOWTIME®, AT&T, Verizon, Spectrum, Comcast Xfinity, Frontier, HughesNet, CenturyLink...and many more. Through our partnerships, we ensure you have access to reliable and diverse service options.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Is HQL Connects a service provider?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>HQL Connects is an authorized dealer and certified retailer, but we are not a direct service provider. We work with leading service providers like those listed above to connect you to their offerings, ensuring you receive the best possible service.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>What are HQL Connects' execution charges?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>HQL Connects charges for its execution services, which include setting up new connections, processing bill payments, plan upgrades, account cancellations, and other administrative tasks. These charges range from $49.99 to $199.99, depending on the service request, and are separate from the billing charges of the service providers you're signed up with.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Why are HQL Connects' execution charges separate from my service provider's billing?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>As a separate entity, HQL Connects handles the execution of your service requests independently. Our charges cover the work required to manage and complete requests like plan upgrades, new installations, or account changes. These execution fees are distinct from your provider's billing, which covers your actual internet, cellular, or streaming service.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>How do I contact HQL Connects for support?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>You can reach out to our customer support team through the contact form on our website or by calling us directly on the assistance number provided below. Our team is available to assist you with any inquiries, service requests, or troubleshooting needs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Get In Touch</h2>
+                    <p>Ready to get started or have questions? We'd love to hear from you.</p>
+                </div>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h3>Contact Information</h3>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h4>Phone</h4>
+                                <p>+1 (833) 708-7177</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h4>Support Hours</h4>
+                                <p>24/7 Available</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-form">
+                        <form>
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject</label>
+                                <input type="text" id="subject" name="subject" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" required></textarea>
+                            </div>
+                            <a href="tel:+18337087177" class="btn btn-primary" style="width: 100%;">
+                                <i class="fas fa-phone"></i>
+                                Call Now
+                            </a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Disclaimer Section -->
+        <section class="section">
+            <div class="container">
+                <div class="disclaimer">
+                    <h2>Disclaimer</h2>
+                    <div class="disclaimer-content">
+                        <p>The information provided on this website is for general informational purposes only. HQL Connects makes no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability, or availability of the information, products, or services contained on this website. Any reliance you place on such information is therefore strictly at your own risk.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>HQL Connects</h3>
+                    <p>Connecting you to the future with premium connection services that deliver speed, security, and reliability.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="#plans">Connection Plans</a></li>
+                        <li><a href="#about">Why Choose Us</a></li>
+                        <li><a href="#testimonials">Customer Stories</a></li>
+                        <li><a href="#contact">Technical Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="terms.html">Terms & Conditions</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="refund.html">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 HQL Connects. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Legal Pages -->
+    <div id="modal" class="modal" style="display: none;">
+        <div class="modal-content glass">
+            <span class="close">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Gallery Lightbox -->
+    <div id="gallery-lightbox" class="gallery-lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+            <div class="lightbox-image" id="lightbox-image">
+                <i id="lightbox-icon" class="fas fa-server"></i>
+            </div>
+            <div class="lightbox-info">
+                <h3 id="lightbox-title">Image Title</h3>
+                <p id="lightbox-description">Image description goes here.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // FAQ accordion functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const isActive = question.classList.contains('active');
+
+                // Close all FAQ items
+                document.querySelectorAll('.faq-question').forEach(q => {
+                    q.classList.remove('active');
+                    q.nextElementSibling.classList.remove('active');
+                });
+
+                // Toggle current item
+                if (!isActive) {
+                    question.classList.add('active');
+                    answer.classList.add('active');
+                }
+            });
+        });
+
+        // Animate sections on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                    
+                    // Animate child elements with stagger effect
+                    const childElements = entry.target.querySelectorAll('.service-card, .plan-card, .feature-card, .testimonial-card, .gallery-item, .faq-item');
+                    childElements.forEach((child, index) => {
+                        setTimeout(() => {
+                            child.classList.add('animate');
+                        }, index * 100);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections and animatable elements
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Also observe individual cards for sections that might not have the .section class
+        document.querySelectorAll('.service-card, .plan-card, .feature-card, .testimonial-card, .gallery-item, .faq-item').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Animate floating cards in hero section with delay
+        setTimeout(() => {
+            const floatingCards = document.querySelectorAll('.floating-card');
+            floatingCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('animate');
+                }, index * 200);
+            });
+        }, 1000);
+
+        // Contact form submission
+        document.querySelector('.contact-form form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const subject = formData.get('subject');
+            const message = formData.get('message');
+
+            // Simple validation
+            if (!name || !email || !subject || !message) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            // Simulate form submission
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                alert('Thank you for your message! We\'ll get back to you soon.');
+                this.reset();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+
+        // Enhanced Mobile menu toggle
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            const navMenu = document.querySelector('.nav-menu');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const header = document.querySelector('.header');
+            
+            navMenu.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            header.classList.toggle('menu-open');
+            
+            // Prevent body scroll when menu is open
+            if (navMenu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+                document.body.style.position = 'fixed';
+                document.body.style.width = '100%';
+            } else {
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.width = '';
+            }
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', function() {
+                const navMenu = document.querySelector('.nav-menu');
+                const mobileMenu = document.querySelector('.mobile-menu');
+                const header = document.querySelector('.header');
+                
+                navMenu.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                header.classList.remove('menu-open');
+                
+                // Restore body scroll
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.width = '';
+            });
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const navMenu = document.querySelector('.nav-menu');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const header = document.querySelector('.header');
+            
+            if (!header.contains(event.target) && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                header.classList.remove('menu-open');
+                
+                // Restore body scroll
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.width = '';
+            }
+        });
+
+        // Handle window resize to close menu if switching to desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                const navMenu = document.querySelector('.nav-menu');
+                const mobileMenu = document.querySelector('.mobile-menu');
+                const header = document.querySelector('.header');
+                
+                navMenu.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                header.classList.remove('menu-open');
+                
+                // Restore body scroll
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.width = '';
+            }
+        });
+
+        // Modal functionality for legal pages
+        function openModal(pageType) {
+            const modal = document.getElementById('modal');
+            const modalBody = document.getElementById('modal-body');
+            
+            let content = '';
+            
+            switch(pageType) {
+                case 'terms':
+                    content = `
+                        <h2>Terms & Conditions</h2>
+                        <p><strong>Last Updated:</strong> June 30, 2025</p>
+                        <h3>1. Acceptance of Terms</h3>
+                        <p>By accessing and using HQL Connects services, you accept and agree to be bound by the terms and provision of this agreement.</p>
+                        <h3>2. Service Description</h3>
+                        <p>HQL Connects provides premium connection services including but not limited to network connectivity, security features, and customer support.</p>
+                        <h3>3. User Responsibilities</h3>
+                        <p>Users are responsible for maintaining the confidentiality of their account information and for all activities that occur under their account.</p>
+                        <h3>4. Payment Terms</h3>
+                        <p>All fees are non-refundable except as expressly stated in our refund policy. Payments are processed securely through our payment partners.</p>
+                        <h3>5. Limitation of Liability</h3>
+                        <p>HQL Connects shall not be liable for any indirect, incidental, special, consequential, or punitive damages.</p>
+                    `;
+                    break;
+                case 'privacy':
+                    content = `
+                        <h2>Privacy Policy</h2>
+                        <p><strong>Last Updated:</strong> June 30, 2025</p>
+                        <h3>1. Information We Collect</h3>
+                        <p>We collect information you provide directly to us, such as when you create an account, subscribe to our services, or contact us for support.</p>
+                        <h3>2. How We Use Your Information</h3>
+                        <p>We use the information we collect to provide, maintain, and improve our services, process transactions, and communicate with you.</p>
+                        <h3>3. Information Sharing</h3>
+                        <p>We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except as described in this policy.</p>
+                        <h3>4. Data Security</h3>
+                        <p>We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+                        <h3>5. Your Rights</h3>
+                        <p>You have the right to access, update, or delete your personal information. Contact us if you wish to exercise these rights.</p>
+                    `;
+                    break;
+                case 'refund':
+                    content = `
+                        <h2>Refund Policy</h2>
+                        <p><strong>Last Updated:</strong> June 30, 2025</p>
+                        <h3>1. 30-Day Money-Back Guarantee</h3>
+                        <p>We offer a 30-day money-back guarantee on all our service plans. If you're not satisfied with our service, you can request a full refund within 30 days of your initial subscription.</p>
+                        <h3>2. Refund Process</h3>
+                        <p>To request a refund, contact our customer support team with your account details and reason for the refund request.</p>
+                        <h3>3. Processing Time</h3>
+                        <p>Approved refunds will be processed within 5-7 business days and credited back to your original payment method.</p>
+                        <h3>4. Exceptions</h3>
+                        <p>Refunds are not available for accounts that have violated our terms of service or have been suspended for abuse.</p>
+                        <h3>5. Partial Refunds</h3>
+                        <p>For plan downgrades, partial refunds may be issued on a prorated basis for the remaining service period.</p>
+                    `;
+                    break;
+                case 'cookies':
+                    content = `
+                        <h2>Cookie Policy</h2>
+                        <p><strong>Last Updated:</strong> June 30, 2025</p>
+                        <h3>1. What Are Cookies</h3>
+                        <p>Cookies are small text files that are stored on your device when you visit our website. They help us provide you with a better experience.</p>
+                        <h3>2. How We Use Cookies</h3>
+                        <p>We use cookies to remember your preferences, analyze site traffic, and improve our services. We also use them for authentication and security purposes.</p>
+                        <h3>3. Types of Cookies</h3>
+                        <p>We use both session cookies (which expire when you close your browser) and persistent cookies (which remain on your device for a set period).</p>
+                        <h3>4. Third-Party Cookies</h3>
+                        <p>Some of our pages may contain third-party cookies from analytics providers and social media platforms.</p>
+                        <h3>5. Managing Cookies</h3>
+                        <p>You can control cookies through your browser settings. However, disabling cookies may affect the functionality of our website.</p>
+                    `;
+                    break;
+                case 'careers':
+                    content = `
+                        <h2>Careers at HQL Connects</h2>
+                        <p>Join our team of innovators and help shape the future of connection services!</p>
+                        <h3>Why Work With Us?</h3>
+                        <ul>
+                            <li>Competitive salary and benefits package</li>
+                            <li>Remote-first work environment</li>
+                            <li>Professional development opportunities</li>
+                            <li>Cutting-edge technology stack</li>
+                            <li>Collaborative and inclusive culture</li>
+                        </ul>
+                        <h3>Current Openings</h3>
+                        <p><strong>Senior Backend Developer</strong> - Full-time, Remote</p>
+                        <p><strong>UI/UX Designer</strong> - Full-time, Remote</p>
+                        <p><strong>Customer Success Manager</strong> - Full-time, Remote</p>
+                        <p><strong>DevOps Engineer</strong> - Full-time, Remote</p>
+                        <h3>Apply Now</h3>
+                        <p>Send your resume and cover letter to <strong>careers@hqlconnects.com</strong></p>
+                    `;
+                    break;
+            }
+            
+            modalBody.innerHTML = content;
+            modal.style.display = 'flex';
+        }
+
+        // Close modal functionality
+        document.querySelector('.close').addEventListener('click', function() {
+            document.getElementById('modal').style.display = 'none';
+        });
+
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('modal');
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Add floating animation delay to cards
+        document.querySelectorAll('.glass-card').forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+
+        // Header background on scroll
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.1)';
+                header.style.boxShadow = 'none';
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+
+        // Gallery Lightbox functionality
+        function openLightbox(imageType) {
+            const lightbox = document.getElementById('gallery-lightbox');
+            const icon = document.getElementById('lightbox-icon');
+            const title = document.getElementById('lightbox-title');
+            const description = document.getElementById('lightbox-description');
+
+            const galleryData = {
+                datacenter: {
+                    icon: 'fas fa-server',
+                    image: '1.jpg',
+                    title: 'State-of-the-Art Data Centers',
+                    description: 'Our world-class data centers feature redundant power systems, advanced cooling technology, and robust security measures. Each facility is strategically located to ensure optimal connectivity and minimal latency for our customers. With 99.99% uptime guarantee and enterprise-grade infrastructure, we provide the foundation for reliable, high-performance internet services.'
+                },
+                fiber: {
+                    icon: 'fas fa-project-diagram',
+                    image: '1.jpg',
+                    title: 'Extensive Fiber Optic Network',
+                    description: 'Our fiber optic network spans thousands of miles, connecting major metropolitan areas and rural communities alike. Using the latest fiber technology, we deliver speeds up to 1 Gbps with incredibly low latency. Our network architecture includes multiple redundant paths to ensure continuous service even during maintenance or unexpected outages.'
+                },
+                control: {
+                    icon: 'fas fa-desktop',
+                    image: '2.png',
+                    title: '24/7 Network Operations Center',
+                    description: 'Our Network Operations Center (NOC) operates around the clock, staffed by certified network engineers and technicians. Advanced monitoring systems track network performance in real-time, enabling proactive maintenance and rapid response to any issues. This ensures our customers enjoy consistent, reliable service with minimal downtime.'
+                },
+                installation: {
+                    icon: 'fas fa-tools',
+                    image: '3.jpg',
+                    title: 'Professional Installation Services',
+                    description: 'Our certified technicians provide comprehensive installation services for both residential and business customers. From initial site assessment to final configuration, we handle every aspect of your setup. Our team is trained on the latest equipment and installation techniques to ensure optimal performance and customer satisfaction.'
+                },
+                equipment: {
+                    icon: 'fas fa-microchip',
+                    image: '4.webp',
+                    title: 'Cutting-Edge Network Equipment',
+                    description: 'We deploy only the most advanced networking equipment from industry-leading manufacturers. Our routers, switches, and optical equipment are regularly updated to incorporate the latest technological advances. This commitment to using top-tier hardware ensures our customers receive the fastest, most reliable internet experience available.'
+                },
+                support: {
+                    icon: 'fas fa-users',
+                    image: '5.webp',
+                    title: 'Expert Customer Support',
+                    description: 'Our customer support team consists of highly trained professionals with extensive technical knowledge. Available 24/7 through multiple channels including phone, email, and live chat, our support staff is committed to resolving issues quickly and efficiently. We pride ourselves on first-call resolution and exceptional customer service.'
+                },
+                security: {
+                    icon: 'fas fa-shield-alt',
+                    image: '6.jpg',
+                    title: 'Advanced Network Security',
+                    description: 'Our comprehensive security infrastructure includes multi-layered firewalls, intrusion detection systems, and advanced threat monitoring. We employ industry-leading encryption protocols and regularly conduct security audits to protect your data and privacy. Our security operations center monitors for threats 24/7, ensuring your connections remain safe and secure.'
+                }
+            };
+
+            const data = galleryData[imageType];
+            if (data) {
+                // Update lightbox image
+                const lightboxImageContainer = document.getElementById('lightbox-image');
+                lightboxImageContainer.innerHTML = `<img src="${data.image}" alt="${data.title}" />`;
+                
+                title.textContent = data.title;
+                description.textContent = data.description;
+                lightbox.style.display = 'flex';
+            }
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('gallery-lightbox');
+            lightbox.style.display = 'none';
+        }
+
+        // Close lightbox when clicking outside
+        document.getElementById('gallery-lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+
+        // Close lightbox with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        // Mobile Performance Optimizations
+        if (window.innerWidth <= 768) {
+            // Disable hover effects on mobile to improve performance
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .service-card:hover,
+                .plan-card:hover,
+                .feature-card:hover,
+                .testimonial:hover,
+                .gallery-item:hover {
+                    transform: none !important;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Optimize scroll performance
+        let ticking = false;
+        function updateScrollPosition() {
+            // Update any scroll-dependent elements here
+            ticking = false;
+        }
+
+        function requestTick() {
+            if (!ticking) {
+                requestAnimationFrame(updateScrollPosition);
+                ticking = true;
+            }
+        }
+
+        // Throttle scroll events for better performance
+        window.addEventListener('scroll', requestTick);
+
+        // Improve touch response
+        document.addEventListener('touchstart', function() {}, { passive: true });
+        document.addEventListener('touchmove', function() {}, { passive: true });
+
+        // Preload critical images on larger screens
+        if (window.innerWidth > 768) {
+            const criticalImages = ['1.jpg', '2.png', '3.jpg', '4.webp', '5.webp', '6.jpg'];
+            criticalImages.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+        }
+
+        // Optimize animations based on device capabilities
+        const hasMotionSupport = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+        const isLowEndDevice = navigator.hardwareConcurrency <= 2;
+        
+        if (!hasMotionSupport || isLowEndDevice) {
+            document.querySelectorAll('.floating-card').forEach(card => {
+                card.style.animation = 'none';
+            });
+        }
+    </script>
+
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            margin: 2rem;
+            padding: 2rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .close {
+            color: var(--text-secondary);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: var(--primary-color);
+        }
+
+        .modal-content h2 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .modal-content h3 {
+            color: var(--text-primary);
+            margin: 1.5rem 0 0.5rem 0;
+            font-size: 1.2rem;
+        }
+
+        .modal-content p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content ul {
+            color: var(--text-secondary);
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        .modal-content ul li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</body>
+</html>
